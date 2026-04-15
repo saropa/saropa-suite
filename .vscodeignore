@@ -1,0 +1,9 @@
+# Development files — excluded from the .vsix package
+scripts/**
+reports/**
+.git/**
+.gitignore
+.vscodeignore
+*.vsix
+__pycache__/
+CHANGELOG.md

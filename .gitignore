@@ -1,0 +1,11 @@
+# Packaged extensions
+*.vsix
+
+# Publish logs — kept locally, not in version control
+reports/
+
+# Python bytecode cache
+__pycache__/
+
+# Node
+node_modules/
