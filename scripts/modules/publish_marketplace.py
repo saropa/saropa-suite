@@ -2,6 +2,8 @@
 Publish to the VS Code Marketplace via 'vsce publish'.
 """
 
+# cspell:ignore itemname
+
 from pathlib import Path
 
 from scripts.modules.log import fatal, heading, run, success
@@ -20,21 +22,39 @@ def publish(root: Path) -> None:
     result = run(["vsce", "publish"], cwd=root, capture=True, check=False)
 
     if result.returncode != 0:
-        # Pull the most useful line from vsce's stderr/stdout for the
-        # error message.  vsce prints "ERROR" lines to stderr.
+        # Pull the most useful lines from vsce's stderr/stdout.
+        # vsce prints "ERROR" lines to stderr.
         output = (result.stderr or "") + (result.stdout or "")
-        detail = ""
-        for line in output.splitlines():
-            stripped = line.strip()
-            if stripped:
-                # Use the first non-empty line as the detail
-                detail = stripped
-                break
+        lines = [ln.strip() for ln in output.splitlines() if ln.strip()]
+
+        # Identify whether this is a PAT / auth problem so the error
+        # message can include targeted remediation steps.
+        is_auth_error = any(
+            keyword in output
+            for keyword in (
+                "Personal Access Token",
+                "not authorized",
+                "TF400813",
+                "401",
+                "credential",
+            )
+        )
+
+        detail = lines[0] if lines else ""
+        auth_hint = ""
+        if is_auth_error:
+            auth_hint = (
+                "\n\n  This looks like a PAT / authentication problem.\n"
+                "  Re-run the publish script — it validates the PAT\n"
+                "  before attempting to publish and will give detailed\n"
+                "  remediation steps if the token is bad."
+            )
 
         fatal(
             f"vsce publish failed (exit code {result.returncode}).\n"
             + (f"  vsce says: {detail}\n" if detail else "")
             + "  Check the log file for full output."
+            + auth_hint
         )
 
     success("Published to VS Code Marketplace.")

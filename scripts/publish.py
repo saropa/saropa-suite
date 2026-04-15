@@ -7,19 +7,25 @@ to the VS Code Marketplace and (optionally) Open VSX Registry.
 All output is colored in the terminal and a full plain-text log is
 written to reports/<yyyymmdd>/<datetime>_publish.log.
 
+If VSCE_PAT is missing or invalid the script automatically falls back
+to browser-based upload: it opens the Marketplace management page and
+the .vsix file in Explorer so you can drag-and-drop.
+
 This is the entry point.  All logic lives in scripts/modules/:
     color.py               — ANSI terminal colors
     log.py                 — dual terminal + log-file output, subprocess runner
     npm_tools.py           — auto-install/update of vsce and ovsx
+    auth.py                — PAT validation for Marketplace and Open VSX
     checks.py              — pre-flight validation (package.json, icon, etc.)
     version.py             — version sync from CHANGELOG.md
     git.py                 — commit, push, and tag releases
     packaging.py           — vsce package
     publish_marketplace.py — vsce publish
     publish_openvsx.py     — ovsx publish
+    verify_publish.py      — poll registries until version is live
 
 Usage:
-    python scripts/publish.py              # full publish (Marketplace + Open VSX)
+    python scripts/publish.py              # full publish (auto-detects method)
     python scripts/publish.py --dry-run    # validate + package only, no publish
     python scripts/publish.py --skip-ovsx  # skip Open VSX, Marketplace only
 
@@ -30,7 +36,9 @@ If package.json has a different version, it is updated automatically.
 # cspell:disable
 
 import argparse
+import subprocess
 import sys
+import webbrowser
 from pathlib import Path
 
 # Ensure the project root is on sys.path so "scripts.modules.*" imports
@@ -39,6 +47,7 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from scripts.modules.auth import check_ovsx_pat, check_vsce_pat
 from scripts.modules.checks import (
     check_categories,
     check_duplicate_version,
@@ -71,6 +80,7 @@ from scripts.modules.npm_tools import ensure_ovsx, ensure_vsce
 from scripts.modules.packaging import package_extension
 from scripts.modules.publish_marketplace import publish as publish_to_marketplace
 from scripts.modules.publish_openvsx import publish as publish_to_openvsx
+from scripts.modules.verify_publish import poll_until_live
 from scripts.modules.version import sync_version_from_changelog
 
 
@@ -82,6 +92,30 @@ PACKAGE_JSON = ROOT / "package.json"
 CHANGELOG_PATH = ROOT / "CHANGELOG.md"
 README_PATH = ROOT / "README.md"
 REPORTS_DIR = ROOT / "reports"
+
+
+# --------------------------------------------------------------------------- #
+# Browser / Explorer helpers
+# --------------------------------------------------------------------------- #
+
+def _open_in_browser(url: str) -> None:
+    """Open *url* in the default browser.  Non-fatal on failure."""
+    try:
+        webbrowser.open(url)
+    except Exception:
+        pass  # Best-effort — the URL is also printed to the terminal
+
+
+def _reveal_in_explorer(path: Path) -> None:
+    """Open Explorer with *path* selected.  Windows-only, non-fatal."""
+    try:
+        # /select, highlights the file instead of opening its parent
+        subprocess.Popen(
+            ["explorer", "/select,", str(path)],
+            shell=False,
+        )
+    except Exception:
+        pass  # Best-effort — the path is also printed to the terminal
 
 
 # --------------------------------------------------------------------------- #
@@ -115,8 +149,25 @@ def main() -> None:
         heading("Tool setup")
         check_node_version(cwd=ROOT)
         ensure_vsce(cwd=ROOT)
-        if not args.skip_ovsx and not args.dry_run:
-            ensure_ovsx(cwd=ROOT)
+
+        # ---- Authenticate ------------------------------------------------- #
+        # Check PATs early.  If VSCE_PAT is missing or invalid the script
+        # will automatically fall back to browser-based upload later —
+        # no need for the user to re-run with a different flag.
+        can_cli_publish = True
+        can_ovsx_publish = True
+
+        if not args.dry_run:
+            pkg_early = load_package_json(PACKAGE_JSON)
+            publisher_early = pkg_early.get("publisher", "")
+            can_cli_publish = check_vsce_pat(publisher_early, cwd=ROOT)
+
+            if can_cli_publish and not args.skip_ovsx:
+                ensure_ovsx(cwd=ROOT)
+                can_ovsx_publish = check_ovsx_pat()
+            else:
+                # No point checking OVSX if Marketplace itself is manual
+                can_ovsx_publish = False
 
         # ---- Pre-flight checks -------------------------------------------- #
         heading("Pre-flight checks")
@@ -173,39 +224,85 @@ def main() -> None:
         info(f"Package:    {bold(vsix_path.name)}")
         info(f"Extensions: {', '.join(pack_ids)}")
 
-        targets = "VS Code Marketplace"
-        if not args.skip_ovsx:
-            targets += " + Open VSX"
-        info(f"Targets:    {bold(targets)}")
+        manage_url = (
+            f"https://marketplace.visualstudio.com/"
+            f"manage/publishers/{publisher}"
+        )
 
-        if not confirm(f"Publish to {targets}?"):
-            info(
-                "Aborted. The .vsix file is still available for manual publishing."
-            )
-            return
+        if can_cli_publish:
+            # ---- Automated CLI publish ----------------------------------- #
+            targets = "VS Code Marketplace"
+            if can_ovsx_publish and not args.skip_ovsx:
+                targets += " + Open VSX"
+            info(f"Targets:    {bold(targets)}")
 
-        # Publish to VS Code Marketplace first (primary target)
-        publish_to_marketplace(ROOT)
+            if not confirm(f"Publish to {targets}?"):
+                info(
+                    "Aborted. The .vsix file is still available "
+                    "for manual publishing."
+                )
+                return
 
-        # Publish to Open VSX (secondary, non-fatal if it fails)
-        if not args.skip_ovsx:
-            publish_to_openvsx(vsix_path, cwd=ROOT)
+            # Publish to VS Code Marketplace first (primary target)
+            publish_to_marketplace(ROOT)
+
+            # Publish to Open VSX (secondary, non-fatal if it fails)
+            if can_ovsx_publish and not args.skip_ovsx:
+                publish_to_openvsx(vsix_path, cwd=ROOT)
+        else:
+            # ---- Browser-based upload ------------------------------------ #
+            # VSCE_PAT is missing or invalid.  Open the Marketplace
+            # management page and highlight the .vsix in Explorer so the
+            # user can update via the web portal with minimal friction.
+            heading("Browser upload — VS Code Marketplace")
+            info("Opening Marketplace management page …")
+            _open_in_browser(manage_url)
+
+            info(f"Opening .vsix in Explorer …")
+            _reveal_in_explorer(vsix_path)
+
+            info("")
+            info(f"  Upload steps:")
+            info(f"    1. Find {bold(name)} in the Marketplace page")
+            info(f"    2. Click the {bold('⋮')} menu → {bold('Update')}")
+            info(f"    3. Upload {bold(vsix_path.name)}")
+            info("")
+
+            if not confirm(
+                "Press y after uploading to verify and tag, or n to skip"
+            ):
+                info("Skipped. The .vsix is still available for later.")
+                info(f"Full log: {dim(str(log_path))}")
+                return
 
         # Tag the commit after successful publish so the tag points to
         # the exact commit that was published.
         tag_version(current_version, cwd=ROOT)
+
+        # ---- Verify live ------------------------------------------------- #
+        # Poll the Marketplace (and optionally Open VSX) until the new
+        # version is visible.  In browser-upload mode we only check the
+        # Marketplace since Open VSX requires CLI-based publish.
+        do_check_ovsx = can_ovsx_publish and not args.skip_ovsx
+        poll_until_live(
+            publisher,
+            name,
+            current_version,
+            check_ovsx=do_check_ovsx,
+            cwd=ROOT,
+        )
 
         # ---- Summary ----------------------------------------------------- #
         heading("Done")
         success(f"Saropa Suite v{current_version} is live.")
         info(
             f"  Marketplace: https://marketplace.visualstudio.com/items?"
-            f"itemName={publisher}.saropa-suite"
+            f"itemName={publisher}.{name}"
         )
-        if not args.skip_ovsx:
+        if do_check_ovsx:
             info(
                 f"  Open VSX:    https://open-vsx.org/extension/"
-                f"{publisher}/saropa-suite"
+                f"{publisher}/{name}"
             )
         info(f"Full log: {dim(str(log_path))}")
 

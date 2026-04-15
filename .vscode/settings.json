@@ -1,7 +1,10 @@
 {
     "cSpell.words": [
+        "codegen",
+        "glassmorphism",
         "openvsx",
-        "ovsx"
+        "ovsx",
+        "Supabase"
     ],
     "saropaLogCapture.minimapProportionalLines": false,
     "saropaLogCapture.minimapShowSqlDensity": false

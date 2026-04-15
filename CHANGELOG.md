@@ -7,9 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- cspell:disable -->
 
-## [Unreleased]
+## [1.0.4]
 
--- **README.md** - Updated feature list
+### Added
+
+- **PAT validation with automatic browser fallback** — the publish script checks `VSCE_PAT` (via `vsce verify-pat`) and `OVSX_PAT` before any expensive work. If PATs are missing or invalid (MFA, billing, Azure DevOps org issues), it automatically falls back to browser-based upload: opens the Marketplace management page and highlights the `.vsix` in Explorer so you can drag-and-drop via ⋮ → Update. No flags or CLI knowledge needed.
+- **Post-publish verification polling** — after publishing (CLI or browser upload), the script polls the VS Code Marketplace and Open VSX Registry every 15 seconds (up to 5 minutes) until the new version is live, confirming the release actually landed.
+- **New modules**: `auth.py` (token validation), `verify_publish.py` (registry polling).
+
+### Changed
+
+- **Improved publish error messages** — `publish_marketplace.py` now detects PAT/auth failures specifically and includes targeted remediation hints instead of a generic "check the log" message.
+- **README.md** — updated feature list
 
 ## [1.0.3]
 
