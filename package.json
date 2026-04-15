@@ -2,7 +2,7 @@
     "name": "saropa-suite",
     "displayName": "Saropa Suite",
     "description": "One-click install for the full integrated Saropa developer toolkit: Log Capture, Drift Advisor, and Lints.",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "publisher": "saropa",
     "license": "MIT",
     "icon": "images/icon.png",
