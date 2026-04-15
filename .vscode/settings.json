@@ -2,5 +2,7 @@
     "cSpell.words": [
         "openvsx",
         "ovsx"
-    ]
+    ],
+    "saropaLogCapture.minimapProportionalLines": false,
+    "saropaLogCapture.minimapShowSqlDensity": false
 }
