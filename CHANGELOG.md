@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- cspell:disable -->
 
+## [1.0.5]
+
+### Changed
+
+- **Reorganized image assets** — moved screenshots from `assets/screenshots/` to `images/screenshots/` and removed the `assets/` folder. All images now live under a single `images/` directory.
+- **Extension icons in README** — replaced emoji headings with inline icons for each extension (Log Capture, Lints, Drift Advisor), copied from sibling projects.
+- **New suite icon** — hierarchy diagram icon replacing the previous log-viewer style icon, with SVG source and Python conversion script (`scripts/svg_to_png.py`).
+
 ## [1.0.4]
 
 ### Added
@@ -31,7 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **Screenshots section in README** — added screenshots from all three extensions: Log Capture (log viewer with severity markers, SQL query view), Lints (memory leak detection, AI solver), and Drift Advisor (health check, performance profiler). Images stored locally in `assets/screenshots/`.
+- **Screenshots section in README** — added screenshots from all three extensions: Log Capture (log viewer with severity markers, SQL query view), Lints (memory leak detection, AI solver), and Drift Advisor (health check, performance profiler). Images stored locally in `images/screenshots/`.
 
 ### Changed
 

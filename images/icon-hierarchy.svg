@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <!-- Background -->
+  <rect width="256" height="256" rx="32" ry="32" fill="#F5F0EB"/>
+
+  <!-- Card -->
+  <rect x="24" y="24" width="208" height="208" rx="20" ry="20" fill="#FFFFFF" stroke="#A09890" stroke-width="4"/>
+
+  <!-- Hierarchy tree -->
+  <!-- Top node (root) - green -->
+  <rect x="84" y="44" width="88" height="24" rx="6" ry="6" fill="#4CAF50"/>
+
+  <!-- Connector: root down to split -->
+  <line x1="128" y1="68" x2="128" y2="82" stroke="#616161" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Horizontal bar connecting two children -->
+  <line x1="72" y1="82" x2="184" y2="82" stroke="#616161" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Left connector down -->
+  <line x1="72" y1="82" x2="72" y2="90" stroke="#616161" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Right connector down -->
+  <line x1="184" y1="82" x2="184" y2="90" stroke="#616161" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Left child node - warm purple/lilac -->
+  <rect x="38" y="90" width="68" height="24" rx="6" ry="6" fill="#9575CD"/>
+
+  <!-- Right child node - coral/salmon -->
+  <rect x="150" y="90" width="68" height="24" rx="6" ry="6" fill="#EF7C60"/>
+
+  <!-- Left child connector down -->
+  <line x1="72" y1="114" x2="72" y2="130" stroke="#616161" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Right child connector down -->
+  <line x1="184" y1="114" x2="184" y2="130" stroke="#616161" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Horizontal bar connecting to bottom node -->
+  <line x1="72" y1="130" x2="184" y2="130" stroke="#616161" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Connector down to bottom node -->
+  <line x1="128" y1="130" x2="128" y2="138" stroke="#616161" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Bottom wide node - blue/indigo with traffic light dots -->
+  <rect x="44" y="138" width="168" height="32" rx="6" ry="6" fill="#5C6BC0"/>
+  <circle cx="66" cy="154" r="7" fill="#4CAF50"/>
+  <circle cx="86" cy="154" r="7" fill="#FF9800"/>
+  <circle cx="106" cy="154" r="7" fill="#E53935"/>
+  <!-- Faux bar lines to right of dots -->
+  <rect x="122" y="148" width="76" height="5" rx="2.5" ry="2.5" fill="#7986CB" opacity="0.7"/>
+  <rect x="122" y="157" width="52" height="5" rx="2.5" ry="2.5" fill="#7986CB" opacity="0.7"/>
+
+  <!-- Connector from bottom node to leaf -->
+  <line x1="128" y1="170" x2="128" y2="180" stroke="#616161" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Leaf node - soft pink/mauve -->
+  <rect x="60" y="180" width="136" height="24" rx="6" ry="6" fill="#CE93D8"/>
+</svg>

@@ -16,11 +16,11 @@ from scripts.modules.log import detail, heading, info, run, success, warn
 
 
 # How often to poll, in seconds.
-POLL_INTERVAL_SECONDS = 15
+POLL_INTERVAL_SECONDS = 20
 
 # Give up after this many seconds to avoid infinite loops if a registry
 # is having a prolonged outage.
-MAX_WAIT_SECONDS = 300
+MAX_WAIT_SECONDS = 1800
 
 
 # --------------------------------------------------------------------------- #

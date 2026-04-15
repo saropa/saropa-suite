@@ -44,7 +44,7 @@ Installing the full Saropa Suite unlocks native, cross-extension APIs that drama
 
 ## 🛠️ What's Included
 
-### [🐛 Saropa Log Capture](https://marketplace.visualstudio.com/items?itemName=saropa.saropa-log-capture)
+### <img src="images/icon_saropa_log_capture.png" width="28" align="top"> [Saropa Log Capture](https://marketplace.visualstudio.com/items?itemName=saropa.saropa-log-capture)
 **Intelligent, Persistent Logging:** The Debug Console is deleted the moment you stop debugging — Log Capture fixes that. It automatically saves all debug session output to persistent, searchable log files and provides a full diagnostic workstation inside VS Code.
 
 - **Zero-config capture** — works with any debug adapter (Dart, Flutter, Node, Python, C++, Go, Java). Install, press F5, done.
@@ -56,10 +56,10 @@ Installing the full Saropa Suite unlocks native, cross-extension APIs that drama
 - **Rich export** — HTML (static or interactive), CSV, JSON, JSONL, shareable `.slc` bundles, Grafana Loki push, and markdown with full metadata. Per-level export presets (Errors Only, Production Ready, Full Debug, Performance Analysis).
 - **20+ integration adapters** — opt-in session context from Git state, test results, code coverage, crash dumps, Docker, performance snapshots, terminal output, HTTP/network, browser DevTools, and more.
 
-<img src="assets/screenshots/20260414_project_log_view.png" alt="Log viewer with colored severity markers" width="450">
-<img src="assets/screenshots/20260401_log_viewer_sql.png" alt="Log viewer showing Drift SQL queries" width="450">
+<img src="images/screenshots/20260414_project_log_view.png" alt="Log viewer with colored severity markers" width="450">
+<img src="images/screenshots/20260401_log_viewer_sql.png" alt="Log viewer showing Drift SQL queries" width="450">
 
-### [🛡️ Saropa Lints](https://marketplace.visualstudio.com/items?itemName=saropa.saropa-lints)
+### <img src="images/icon_saropa_lints.png" width="28" align="top"> [Saropa Lints](https://marketplace.visualstudio.com/items?itemName=saropa.saropa-lints)
 **Strict Behavioral Analysis:** 2,100+ custom lint rules and 250+ quick fixes that go far beyond syntax — catching the runtime errors, memory leaks, and security vulnerabilities that standard linters miss entirely.
 
 - **Behavioral detection** — catches code that compiles but fails at runtime: undisposed controllers, `setState` after dispose, `GlobalKey` recreation, hardcoded credentials. Uses proper AST type checking, not string matching.
@@ -72,10 +72,10 @@ Installing the full Saropa Suite unlocks native, cross-extension APIs that drama
 - **AI-optimized diagnostics** — every diagnostic is formatted as a paste-ready AI repair prompt for Cursor, Copilot, and Windsurf.
 - **Cross-file CLI** — detect unused files, circular imports, and generate import graphs (DOT format for Graphviz).
 
-<img src="assets/screenshots/20260401_problems_tab.png" alt="Flutter memory leak detection in VS Code" width="450">
-<img src="assets/screenshots/20260401_AI_solver_tab.png" alt="AI fixing security vulnerability" width="450">
+<img src="images/screenshots/20260401_problems_tab.png" alt="Flutter memory leak detection in VS Code" width="450">
+<img src="images/screenshots/20260401_AI_solver_tab.png" alt="AI fixing security vulnerability" width="450">
 
-### [🗄️ Saropa Drift Advisor](https://marketplace.visualstudio.com/items?itemName=saropa.drift-viewer)
+### <img src="images/icon_saropa_drift_advisor.png" width="28" align="top"> [Saropa Drift Advisor](https://marketplace.visualstudio.com/items?itemName=saropa.drift-viewer)
 **Deep SQLite/Drift Debugging:** A two-client debug platform — a lightweight HTTP server in your app (zero third-party runtime dependencies) paired with both a browser UI and a VS Code extension. Not just a table viewer; a complete database diagnostic suite.
 
 - **Data browsing** — multi-table tabs with foreign key navigation and breadcrumb trails, PII masking (50+ column patterns), data type toggle (raw SQLite ↔ human-readable), and one-click cell copy.
@@ -89,8 +89,8 @@ Installing the full Saropa Suite unlocks native, cross-extension APIs that drama
 - **Security** — default read-only posture (writes require explicit callback), bearer token or HTTP Basic auth, CORS control, rate limiting, loopback-only binding, and session TTL.
 - **Four themes** — Light, Showcase (glassmorphism with animated gradients), Dark, and Midnight (deep navy with aurora glow), with OS dark-mode sync.
 
-<img src="assets/screenshots/health.png" alt="Database health check scanning tables" width="450">
-<img src="assets/screenshots/perf.png" alt="Query performance profiler tracking slow queries" width="450">
+<img src="images/screenshots/health.png" alt="Database health check scanning tables" width="450">
+<img src="images/screenshots/perf.png" alt="Query performance profiler tracking slow queries" width="450">
 
 ---
 
