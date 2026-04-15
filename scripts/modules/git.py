@@ -1,9 +1,10 @@
 """
-Git operations for the publish pipeline — commit and tag.
+Git operations for the publish pipeline — commit, push, and tag.
 
-After a version bump, the script commits the changed package.json so the
-published version corresponds to a clean commit.  After a successful
-publish, a version tag (e.g. v1.0.1) is created for traceability.
+Before publishing, the script commits all outstanding changes and pushes
+to the remote so the published version matches what's on the remote.
+After a successful publish, a version tag (e.g. v1.0.1) is created and
+pushed for traceability.
 """
 
 from pathlib import Path
@@ -22,64 +23,72 @@ def _is_git_repo(*, cwd: Path) -> bool:
     return result.returncode == 0
 
 
-def commit_version_bump(version: str, *, cwd: Path) -> None:
-    """Stage package.json and commit the version bump.
+def commit_all_and_push(version: str, *, cwd: Path) -> None:
+    """Stage all changes, commit with a release message, and push.
 
-    Skipped silently if:
-    - The directory is not a git repository.
-    - package.json has no staged or unstaged changes (nothing to commit).
+    This ensures the published version corresponds to a clean, pushed
+    commit.  The commit includes everything in the working tree — not
+    just package.json — so that CHANGELOG.md, README.md, and any other
+    pending changes are captured in the release commit.
 
-    The commit message follows the conventional format:
-        chore: bump version to X.Y.Z
+    Fatals if:
+    - The commit fails (nothing to publish from a broken state).
+    - The push fails (the Marketplace publish must match what's on the remote).
+
+    Skipped silently if the directory is not a git repository.
     """
-    heading("Git commit")
+    heading("Git commit & push")
 
     if not _is_git_repo(cwd=cwd):
-        detail("Not a git repository — skipping commit.")
+        detail("Not a git repository — skipping commit & push.")
         return
 
-    # Check if package.json actually has changes to commit
+    # Check if there is anything to commit (staged + unstaged + untracked)
     result = run(
-        ["git", "diff", "--name-only", "package.json"],
+        ["git", "status", "--porcelain"],
         cwd=cwd,
         capture=True,
         check=False,
     )
-    has_unstaged = result.returncode == 0 and result.stdout.strip()
-
-    result = run(
-        ["git", "diff", "--cached", "--name-only", "package.json"],
-        cwd=cwd,
-        capture=True,
-        check=False,
-    )
-    has_staged = result.returncode == 0 and result.stdout.strip()
-
-    if not has_unstaged and not has_staged:
-        detail("package.json has no changes — skipping commit.")
-        return
-
-    # Stage package.json (only this file — don't sweep in unrelated changes)
-    run(["git", "add", "package.json"], cwd=cwd)
-
-    # Commit with a conventional message
-    message = f"chore: bump version to {version}"
-    result = run(
-        ["git", "commit", "-m", message],
-        cwd=cwd,
-        capture=True,
-        check=False,
-    )
-
     if result.returncode != 0:
-        # Commit failed — warn but don't abort the publish pipeline.
-        # The user can commit manually afterward.
-        warn(
-            f"Git commit failed. You may need to commit manually.\n"
-            f"  Intended message: {message}"
-        )
+        fatal("git status failed — cannot determine working tree state.")
+
+    if not result.stdout.strip():
+        detail("Working tree is clean — nothing to commit.")
     else:
+        # Stage everything and commit with a release message
+        run(["git", "add", "-A"], cwd=cwd)
+
+        message = f"Release v{version}"
+        commit_result = run(
+            ["git", "commit", "-m", message],
+            cwd=cwd,
+            capture=True,
+            check=False,
+        )
+
+        if commit_result.returncode != 0:
+            fatal(
+                f"Git commit failed.\n"
+                f"  Intended message: {message}\n"
+                f"  Output: {commit_result.stderr.strip()}"
+            )
         success(f"Committed: {message}")
+
+    # Push to the remote so the published version matches the remote
+    push_result = run(
+        ["git", "push"],
+        cwd=cwd,
+        capture=True,
+        check=False,
+    )
+
+    if push_result.returncode != 0:
+        fatal(
+            "Git push failed — cannot publish from an unpushed state.\n"
+            f"  Output: {push_result.stderr.strip()}"
+        )
+    success("Pushed to remote.")
 
 
 def tag_version(version: str, *, cwd: Path) -> None:
@@ -123,6 +132,21 @@ def tag_version(version: str, *, cwd: Path) -> None:
             f"Failed to create tag '{tag_name}'.\n"
             f"  You can create it manually:  git tag -a {tag_name} -m \"Release {version}\""
         )
+        return
+
+    success(f"Tagged: {tag_name}")
+
+    # Push the tag to the remote
+    push_result = run(
+        ["git", "push", "origin", tag_name],
+        cwd=cwd,
+        capture=True,
+        check=False,
+    )
+    if push_result.returncode != 0:
+        warn(
+            f"Failed to push tag '{tag_name}'.\n"
+            f"  You can push it manually:  git push origin {tag_name}"
+        )
     else:
-        success(f"Tagged: {tag_name}")
-        detail(f"Push with:  git push origin {tag_name}")
+        success(f"Pushed tag: {tag_name}")

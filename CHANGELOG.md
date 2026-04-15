@@ -7,11 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- cspell:disable -->
 
-## [Unreleased]
+## [1.0.3]
 
 ### Changed
 
+- **CHANGELOG.md is now the version source of truth** — the publish script reads the first `## [x.y.z]` heading from CHANGELOG.md and automatically syncs package.json to match. The `--patch`, `--minor`, and `--major` flags have been removed.
+- **Git commit & push before publish** — the script now commits all outstanding changes and pushes to the remote before publishing. After a successful publish, an annotated `vX.Y.Z` tag is created and pushed.
+
+## [1.0.2]
+
+### Added
+
+- **Screenshots section in README** — added screenshots from all three extensions: Log Capture (log viewer with severity markers, SQL query view), Lints (memory leak detection, AI solver), and Drift Advisor (health check, performance profiler). Images stored locally in `assets/screenshots/`.
+
+### Changed
+
+- **CHANGELOG.md is now the version source of truth** — the publish script reads the first `## [x.y.z]` heading from CHANGELOG.md and automatically syncs package.json to match. The `--patch`, `--minor`, and `--major` flags have been removed.
+- **Git commit & push before publish** — the script now commits all outstanding changes and pushes to the remote before publishing. After a successful publish, an annotated `vX.Y.Z` tag is created and pushed.
 - **README rewritten** — removed publishing workflow and internal dev details. README now focuses on what each extension does, why to install them together, and how to get started.
+- **License link** — MIT license text in README is now a clickable link to the LICENSE file.
 - **Publishing docs moved to CONTRIBUTING.md** — publish script usage, environment variables, and requirements are now in a separate contributor document.
 
 ## [1.0.1]
@@ -20,7 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Open VSX publishing** — publish script now publishes to both the VS Code Marketplace and the Open VSX Registry (used by VS Codium, Gitpod, Eclipse Theia). Controlled via `OVSX_PAT` env var; skippable with `--skip-ovsx`.
 - **Auto-update of CLI tools** — vsce and ovsx are automatically updated to the latest version before each publish run, preventing mid-publish "outdated version" warnings.
-- **Git integration** — after a version bump the script commits the package.json change and creates an annotated `vX.Y.Z` tag after successful publish.
+- **Git integration** — after a successful publish, creates an annotated `vX.Y.Z` git tag.
 - **Expanded pre-flight checks:**
   - All required package.json fields (name, displayName, description, version, publisher, license).
   - `engines.vscode` field is present.
@@ -41,7 +55,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- **CHANGELOG.md is now the version source of truth** — the publish script reads the first `## [x.y.z]` heading from CHANGELOG.md and automatically syncs package.json to match. The `--patch`, `--minor`, and `--major` flags have been removed.
 - **Modularized publish script** — split the monolithic `publish.py` into `scripts/modules/` subpackage: `color`, `log`, `npm_tools`, `checks`, `version`, `git`, `packaging`, `publish_marketplace`, `publish_openvsx`.
 - Publish script now uses `shell=True` on Windows to resolve `.cmd` wrappers (fixes `FileNotFoundError` when running vsce on Windows).
 

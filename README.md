@@ -10,6 +10,26 @@ One-click install for the full Saropa developer toolkit.
 | **[Saropa Lints](https://marketplace.visualstudio.com/items?itemName=saropa.saropa-lints)** | 1700+ custom Dart and Flutter lint rules. Catches memory leaks, OWASP-mapped security vulnerabilities, and runtime crashes. AI-ready diagnostics for faster repairs. |
 | **[Saropa Drift Advisor](https://marketplace.visualstudio.com/items?itemName=saropa.drift-viewer)** | Schema health, query performance, index suggestions, and anomaly detection for Drift (SQLite) databases. |
 
+## Screenshots
+
+### Saropa Log Capture
+
+![Debug output in the log viewer with colored severity markers, framework classification, and run navigation](assets/screenshots/20260414_project_log_view.png)
+
+![Log viewer showing Drift SQL queries with syntax highlighting and diagnostic badges](assets/screenshots/20260401_log_viewer_sql.png)
+
+### Saropa Lints
+
+![Flutter memory leak detection in VS Code showing undisposed TextEditingController](assets/screenshots/20260401_problems_tab.png)
+
+![AI fixing Flutter security vulnerability automatically](assets/screenshots/20260401_AI_solver_tab.png)
+
+### Saropa Drift Advisor
+
+![Database health check scanning tables for data quality issues like NULLs, duplicates, and outliers](assets/screenshots/health.png)
+
+![Query performance profiler tracking slow queries with execution times and row counts](assets/screenshots/perf.png)
+
 ## Why install the pack?
 
 Each extension works well standalone, but they unlock deeper integration when installed together:

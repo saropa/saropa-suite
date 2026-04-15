@@ -13,7 +13,7 @@ This is the entry point.  All logic lives in scripts/modules/:
     npm_tools.py           — auto-install/update of vsce and ovsx
     checks.py              — pre-flight validation (package.json, icon, etc.)
     version.py             — version sync from CHANGELOG.md
-    git.py                 — commit version bumps and create release tags
+    git.py                 — commit, push, and tag releases
     packaging.py           — vsce package
     publish_marketplace.py — vsce publish
     publish_openvsx.py     — ovsx publish
@@ -44,7 +44,6 @@ from scripts.modules.checks import (
     check_duplicate_version,
     check_engines,
     check_extension_pack_ids,
-    check_git_clean,
     check_git_tag_conflict,
     check_icon,
     check_license,
@@ -59,7 +58,7 @@ from scripts.modules.checks import (
     load_package_json,
 )
 from scripts.modules.color import bold, dim
-from scripts.modules.git import commit_version_bump, tag_version
+from scripts.modules.git import commit_all_and_push, tag_version
 from scripts.modules.log import (
     close_log_file,
     confirm,
@@ -143,20 +142,18 @@ def main() -> None:
         # CHANGELOG.md is the source of truth for the version.  If
         # package.json disagrees, it is updated to match automatically.
         heading("Version sync (CHANGELOG.md → package.json)")
-        prev_version = current_version
         current_version = sync_version_from_changelog(
             PACKAGE_JSON, CHANGELOG_PATH, current_version
         )
 
-        # If version changed, commit package.json so the publish
-        # corresponds to a clean, tagged commit.
-        if current_version != prev_version:
-            commit_version_bump(current_version, cwd=ROOT)
+        # ---- Commit & push ------------------------------------------------ #
+        # Commit all outstanding changes (version sync, CHANGELOG, README,
+        # etc.) and push so the published version matches the remote.
+        commit_all_and_push(current_version, cwd=ROOT)
 
         heading("Version and git checks")
         name = pkg.get("name", "saropa-suite")
         check_duplicate_version(publisher, name, current_version, cwd=ROOT)
-        check_git_clean(cwd=ROOT)
         check_git_tag_conflict(current_version, cwd=ROOT)
 
         # ---- Package ------------------------------------------------------ #

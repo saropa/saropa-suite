@@ -9,7 +9,7 @@ The log file receives stripped plain text so it is readable in any editor.
 import re
 import subprocess
 import sys
-from datetime import datetime, timezone
+from datetime import datetime
 from pathlib import Path
 
 from scripts.modules.color import bold, cyan, dim, green, red, yellow
@@ -39,7 +39,7 @@ def init_log_file(reports_dir: Path) -> Path:
     """Create the log directory and open the log file.  Returns the log path."""
     global _log_file_handle, _log_file_path
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now()
     date_dir = now.strftime("%Y%m%d")
     filename = now.strftime("%Y%m%d_%H%M%S") + "_publish.log"
 
@@ -61,7 +61,7 @@ def close_log_file() -> None:
     """Flush a footer and close the log file."""
     global _log_file_handle
     if _log_file_handle is not None:
-        now = datetime.now(timezone.utc)
+        now = datetime.now()
         _log_file_handle.write(f"\n{'=' * 60}\n")
         _log_file_handle.write(f"Finished: {now.isoformat()}\n")
         _log_file_handle.close()
