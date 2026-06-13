@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.6]
+
 ### Added
 
 - **Automatic version bump from `[Unreleased]`** — the publish script now promotes a non-empty `## [Unreleased]` section to a new numbered release before packaging: it bumps the latest version (patch by default, override with `--bump major|minor|patch`), renames the heading to the new version, and seeds a fresh empty `## [Unreleased]`. This prevents the "version already exists and cannot be modified" Marketplace rejection that occurred when changes accumulated under `[Unreleased]` while the version parser kept reusing the last numbered heading (`scripts/modules/version.py`, `scripts/publish.py`).
