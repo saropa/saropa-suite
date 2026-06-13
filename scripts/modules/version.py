@@ -52,6 +52,78 @@ def read_changelog_version(changelog_path: Path) -> str:
     )
 
 
+def _bump(version: str, level: str) -> str:
+    """Return *version* incremented at the given semver *level*.
+
+    level is one of "major", "minor", "patch". A higher-level bump zeroes
+    the lower components (1.2.3 --minor--> 1.3.0) per semver.
+    """
+    major, minor, patch = (int(part) for part in version.split("."))
+    if level == "major":
+        return f"{major + 1}.0.0"
+    if level == "minor":
+        return f"{major}.{minor + 1}.0"
+    return f"{major}.{minor}.{patch + 1}"
+
+
+def promote_unreleased(changelog_path: Path, bump: str = "patch") -> str | None:
+    """Promote a non-empty ``## [Unreleased]`` section to a new version.
+
+    The Marketplace rejects re-uploading an existing version, so changes
+    accumulated under ``## [Unreleased]`` must become a fresh numbered
+    release before publishing. This:
+
+      1. Confirms an ``## [Unreleased]`` heading exists and has at least
+         one bullet entry under it (an empty section is nothing to ship).
+      2. Computes the next version by bumping the latest released version
+         (the first ``## [x.y.z]`` heading) at *bump* level.
+      3. Renames the Unreleased heading to ``## [x.y.z]`` and inserts a
+         fresh empty ``## [Unreleased]`` above it so future changes still
+         have a home.
+
+    Returns the new version string, or None when there is nothing to
+    promote (no Unreleased heading, or it has no entries) — in which case
+    the caller falls back to the existing latest version.
+    """
+    content = changelog_path.read_text(encoding="utf-8")
+
+    # Locate the Unreleased heading. Case-insensitive so "[unreleased]"
+    # written by hand still matches.
+    heading_match = re.search(
+        r"^##\s+\[Unreleased\].*$", content, re.MULTILINE | re.IGNORECASE
+    )
+    if heading_match is None:
+        return None
+
+    # The section body runs from the end of the heading line to the next
+    # "## " heading (or end of file). A release needs real entries — a
+    # body with no "- " bullet is empty and must not trigger a bump.
+    body_start = heading_match.end()
+    next_heading = re.search(r"^##\s+", content[body_start:], re.MULTILINE)
+    body = (
+        content[body_start : body_start + next_heading.start()]
+        if next_heading
+        else content[body_start:]
+    )
+    if re.search(r"^\s*-\s+\S", body, re.MULTILINE) is None:
+        return None  # Unreleased section is empty — nothing to release
+
+    latest = read_changelog_version(changelog_path)
+    new_version = _bump(latest, bump)
+
+    # Rename the Unreleased heading to the new version and seed a fresh
+    # empty Unreleased above it for the next cycle.
+    replacement = f"## [Unreleased]\n\n## [{new_version}]"
+    content = content[: heading_match.start()] + replacement + content[heading_match.end():]
+    changelog_path.write_text(content, encoding="utf-8")
+
+    success(
+        f"Promoted CHANGELOG [Unreleased] -> [{new_version}] "
+        f"({bump} bump from {latest})"
+    )
+    return new_version
+
+
 def sync_version_from_changelog(
     package_json: Path, changelog_path: Path, pkg_version: str
 ) -> str:

@@ -81,7 +81,10 @@ from scripts.modules.packaging import package_extension
 from scripts.modules.publish_marketplace import publish as publish_to_marketplace
 from scripts.modules.publish_openvsx import publish as publish_to_openvsx
 from scripts.modules.verify_publish import poll_until_live
-from scripts.modules.version import sync_version_from_changelog
+from scripts.modules.version import (
+    promote_unreleased,
+    sync_version_from_changelog,
+)
 
 
 # --------------------------------------------------------------------------- #
@@ -136,6 +139,15 @@ def main() -> None:
         action="store_true",
         help="Skip publishing to Open VSX Registry (Marketplace only).",
     )
+    parser.add_argument(
+        "--bump",
+        choices=["major", "minor", "patch"],
+        default="patch",
+        help=(
+            "Semver level to bump when promoting CHANGELOG [Unreleased] "
+            "to a new version (default: patch)."
+        ),
+    )
     args = parser.parse_args()
 
     # ---- Initialize log file ---------------------------------------------- #
@@ -188,6 +200,16 @@ def main() -> None:
         # ---- Network checks (slower) ------------------------------------- #
         heading("Verifying pack extensions exist on Marketplace")
         check_marketplace_listings(pack_ids, cwd=ROOT)
+
+        # ---- Promote [Unreleased] → new version --------------------------- #
+        # The Marketplace rejects re-uploading an existing version, so any
+        # changes sitting under ## [Unreleased] must first become a fresh
+        # numbered release. If Unreleased is empty this is a no-op and we
+        # publish the existing latest version.
+        heading("Version bump (CHANGELOG.md [Unreleased])")
+        promoted = promote_unreleased(CHANGELOG_PATH, bump=args.bump)
+        if promoted is None:
+            info("No [Unreleased] entries to promote — using existing version.")
 
         # ---- Sync version from CHANGELOG.md --------------------------------- #
         # CHANGELOG.md is the source of truth for the version.  If
@@ -290,6 +312,18 @@ def main() -> None:
             current_version,
             check_ovsx=do_check_ovsx,
             cwd=ROOT,
+        )
+
+        # ---- Final safety commit ----------------------------------------- #
+        # The publish has succeeded. Commit and push anything still in the
+        # working tree (e.g. edits made during browser-upload, or files a
+        # later step wrote) so no released code is left unsaved. Non-fatal:
+        # the version is already live, so a straggler must not abort here.
+        commit_all_and_push(
+            current_version,
+            cwd=ROOT,
+            message=f"Save remaining changes after publishing v{current_version}",
+            fatal_on_error=False,
         )
 
         # ---- Summary ----------------------------------------------------- #

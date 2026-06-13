@@ -23,7 +23,9 @@ def _is_git_repo(*, cwd: Path) -> bool:
     return result.returncode == 0
 
 
-def commit_all_and_push(version: str, *, cwd: Path) -> None:
+def commit_all_and_push(
+    version: str, *, cwd: Path, message: str | None = None, fatal_on_error: bool = True
+) -> None:
     """Stage all changes, commit with a release message, and push.
 
     This ensures the published version corresponds to a clean, pushed
@@ -31,9 +33,14 @@ def commit_all_and_push(version: str, *, cwd: Path) -> None:
     just package.json — so that CHANGELOG.md, README.md, and any other
     pending changes are captured in the release commit.
 
-    Fatals if:
-    - The commit fails (nothing to publish from a broken state).
-    - The push fails (the Marketplace publish must match what's on the remote).
+    Args:
+        version:        Version being released, used in the default message.
+        cwd:            Repository working directory.
+        message:        Commit message override. Defaults to "Release v{version}".
+        fatal_on_error: When True (the pre-publish commit), a commit/push
+            failure aborts the run. When False (the post-publish safety
+            commit), failures only warn — the publish already succeeded,
+            so an unpushed straggler must not mask a live release.
 
     Skipped silently if the directory is not a git repository.
     """
@@ -43,6 +50,14 @@ def commit_all_and_push(version: str, *, cwd: Path) -> None:
         detail("Not a git repository — skipping commit & push.")
         return
 
+    # Post-publish safety commits must never abort the run, so route their
+    # failures through warn() instead of fatal().
+    def _fail(text: str) -> None:
+        if fatal_on_error:
+            fatal(text)
+        else:
+            warn(text)
+
     # Check if there is anything to commit (staged + unstaged + untracked)
     result = run(
         ["git", "status", "--porcelain"],
@@ -51,29 +66,31 @@ def commit_all_and_push(version: str, *, cwd: Path) -> None:
         check=False,
     )
     if result.returncode != 0:
-        fatal("git status failed — cannot determine working tree state.")
+        _fail("git status failed — cannot determine working tree state.")
+        return
 
     if not result.stdout.strip():
         detail("Working tree is clean — nothing to commit.")
     else:
-        # Stage everything and commit with a release message
+        # Stage everything and commit with the given (or default) message
         run(["git", "add", "-A"], cwd=cwd)
 
-        message = f"Release v{version}"
+        commit_message = message or f"Release v{version}"
         commit_result = run(
-            ["git", "commit", "-m", message],
+            ["git", "commit", "-m", commit_message],
             cwd=cwd,
             capture=True,
             check=False,
         )
 
         if commit_result.returncode != 0:
-            fatal(
+            _fail(
                 f"Git commit failed.\n"
-                f"  Intended message: {message}\n"
+                f"  Intended message: {commit_message}\n"
                 f"  Output: {commit_result.stderr.strip()}"
             )
-        success(f"Committed: {message}")
+            return
+        success(f"Committed: {commit_message}")
 
     # Push to the remote so the published version matches the remote
     push_result = run(
@@ -84,10 +101,11 @@ def commit_all_and_push(version: str, *, cwd: Path) -> None:
     )
 
     if push_result.returncode != 0:
-        fatal(
+        _fail(
             "Git push failed — cannot publish from an unpushed state.\n"
             f"  Output: {push_result.stderr.strip()}"
         )
+        return
     success("Pushed to remote.")
 
 

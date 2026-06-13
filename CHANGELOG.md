@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Automatic version bump from `[Unreleased]`** — the publish script now promotes a non-empty `## [Unreleased]` section to a new numbered release before packaging: it bumps the latest version (patch by default, override with `--bump major|minor|patch`), renames the heading to the new version, and seeds a fresh empty `## [Unreleased]`. This prevents the "version already exists and cannot be modified" Marketplace rejection that occurred when changes accumulated under `[Unreleased]` while the version parser kept reusing the last numbered heading (`scripts/modules/version.py`, `scripts/publish.py`).
+- **Final safety commit after publish** — once the version is live, the script commits and pushes any remaining working-tree changes (e.g. edits made during browser upload) so no released code is left unsaved. This post-publish commit is non-fatal: since the release already succeeded, a commit/push straggler only warns instead of aborting (`scripts/modules/git.py`, `scripts/publish.py`).
+
 ### Fixed
 
 - **Publish script no longer aborts when npm's global bin is off PATH** — `ensure_vsce`/`ensure_ovsx` previously failed with "vsce was installed but is not on PATH" whenever the npm global prefix (e.g. `C:\Users\<user>\AppData\Roaming\npm`) was missing from the shell PATH, even though the install succeeded. They now resolve the prefix via `npm config get prefix` and prepend the global bin directory to the process PATH before the reachability check, so every `vsce`/`ovsx` subprocess works regardless of shell PATH state (`scripts/modules/npm_tools.py`).
