@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- cspell:disable -->
 
+## [Unreleased]
+
+### Changed
+
+- **README feature list** — added Log Capture's Crashlytics & Vitals panel (Firebase crash issues, crash-free users/sessions, trend sparklines, issue archiving, background alerts) and the interactive Session Flow Map to the Log Capture section, and clarified Drift Advisor's security posture as secure-by-default (loopback-only binding, no wildcard CORS).
+
 ## [1.0.5]
 
 ### Changed

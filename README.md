@@ -50,9 +50,10 @@ Installing the full Saropa Suite unlocks native, cross-extension APIs that drama
 - **Zero-config capture** — works with any debug adapter (Dart, Flutter, Node, Python, C++, Go, Java). Install, press F5, done.
 - **Virtual-scrolling viewer** — handles 100K+ lines without lag, with real-time severity filtering across 8 levels, regex search with history, and click-to-source navigation.
 - **Smart error classification** — auto-classifies errors (CRITICAL, TRANSIENT, BUG) with inline badges, fingerprints recurring patterns across sessions, and detects ANR risk, N+1 queries, and slow operations.
+- **Crashlytics & Vitals panel** — pulls Firebase Crashlytics issues and Google Play crash-free users/sessions into VS Code, with per-issue trend sparklines, "Regressed"/"Repetitive" tags, issue archiving, background new-crash alerts, and deep-links straight to the matching Firebase issue.
 - **Unified signal analysis** — aggregates errors, warnings, performance, SQL, network, and memory signals across sessions with trend tracking (↑ stable ↓), co-occurrence detection, and evidence-backed reports with surrounding context.
 - **SQL diagnostics** — query fingerprinting, N+1 detection, slow query burst markers, and cross-session SQL comparison with Drift ORM support.
-- **Session management** — side-by-side session comparison, session replay with scrubber/speed controls, deep links (vscode:// URLs), active case investigations, and collapsible daily groupings.
+- **Session management** — side-by-side session comparison (2 or 3 logs at once), session replay with scrubber/speed controls, an interactive Session Flow Map diagram with pan/zoom and per-node detail, deep links (vscode:// URLs), active case investigations, and collapsible daily groupings.
 - **Rich export** — HTML (static or interactive), CSV, JSON, JSONL, shareable `.slc` bundles, Grafana Loki push, and markdown with full metadata. Per-level export presets (Errors Only, Production Ready, Full Debug, Performance Analysis).
 - **20+ integration adapters** — opt-in session context from Git state, test results, code coverage, crash dumps, Docker, performance snapshots, terminal output, HTTP/network, browser DevTools, and more.
 
@@ -86,7 +87,7 @@ Installing the full Saropa Suite unlocks native, cross-extension APIs that drama
 - **Time travel** — snapshots with diff comparison and export, timeline auto-capture on data change, database comparison (schema match, row counts, migration DDL), row comparator, and query regression detection across sessions.
 - **Performance profiling** — query execution times, slow-query detection (configurable threshold), mutation stream with real-time INSERT/UPDATE/DELETE feed, and watch panel with live polling and diff highlighting.
 - **Collaboration** — shareable session URLs with annotations and expiry, portable self-contained HTML reports, CSV/JSON/SQL dumps, and raw `.db` download.
-- **Security** — default read-only posture (writes require explicit callback), bearer token or HTTP Basic auth, CORS control, rate limiting, loopback-only binding, and session TTL.
+- **Security** — secure-by-default (loopback-only binding, no wildcard CORS) with a read-only posture (writes require explicit callback), bearer token or HTTP Basic auth, rate limiting, and session TTL.
 - **Four themes** — Light, Showcase (glassmorphism with animated gradients), Dark, and Midnight (deep navy with aurora glow), with OS dark-mode sync.
 
 <img src="images/screenshots/health.png" alt="Database health check scanning tables" width="450">
