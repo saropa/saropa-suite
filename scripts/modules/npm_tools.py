@@ -7,9 +7,44 @@ the "you have an outdated version" warning from appearing mid-publish.
 """
 
 import json
+import os
 import shutil
+from pathlib import Path
 
 from scripts.modules.log import fatal, info, run, success, warn
+
+
+def _ensure_npm_bin_on_path(*, cwd) -> None:
+    """Prepend npm's global bin directory to this process's PATH.
+
+    On Windows the npm default global prefix (C:\\Users\\<user>\\AppData\\
+    Roaming\\npm) is frequently NOT on the user's PATH, so freshly
+    installed global tools like vsce/ovsx are unreachable by name even
+    though the install succeeded. Rather than fail and tell the user to
+    "restart your terminal", resolve the prefix from npm itself and add
+    it to os.environ so every subsequent subprocess (which inherits this
+    env) and shutil.which() can find the tool. Idempotent — adding a dir
+    already present is a no-op.
+    """
+    result = run(
+        ["npm", "config", "get", "prefix"],
+        cwd=cwd,
+        capture=True,
+        check=False,
+    )
+    if result.returncode != 0 or not result.stdout.strip():
+        return  # Could not resolve prefix; fall back to existing PATH
+
+    prefix = Path(result.stdout.strip())
+
+    # On Windows the executables live directly in the prefix; on Unix
+    # they live in prefix/bin. Add both so this works either way.
+    candidate_dirs = [prefix, prefix / "bin"]
+    path_parts = os.environ.get("PATH", "").split(os.pathsep)
+    for candidate in candidate_dirs:
+        if candidate.is_dir() and str(candidate) not in path_parts:
+            os.environ["PATH"] = str(candidate) + os.pathsep + os.environ["PATH"]
+            path_parts.insert(0, str(candidate))
 
 
 def _get_installed_version(package_name: str, *, cwd) -> str | None:
@@ -112,6 +147,7 @@ def install_or_update(package_name: str, display_name: str, *, cwd) -> None:
 def ensure_vsce(*, cwd) -> None:
     """Ensure vsce (@vscode/vsce) is installed, up-to-date, and on PATH."""
     install_or_update("@vscode/vsce", "vsce", cwd=cwd)
+    _ensure_npm_bin_on_path(cwd=cwd)
     if shutil.which("vsce") is None:
         fatal(
             "vsce was installed but is not on PATH.\n"
@@ -122,6 +158,7 @@ def ensure_vsce(*, cwd) -> None:
 def ensure_ovsx(*, cwd) -> None:
     """Ensure ovsx is installed, up-to-date, and on PATH."""
     install_or_update("ovsx", "ovsx", cwd=cwd)
+    _ensure_npm_bin_on_path(cwd=cwd)
     if shutil.which("ovsx") is None:
         fatal(
             "ovsx was installed but is not on PATH.\n"

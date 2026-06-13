@@ -4,7 +4,8 @@
         "glassmorphism",
         "openvsx",
         "ovsx",
-        "Supabase"
+        "Supabase",
+        "vscodeignore"
     ],
     "saropaLogCapture.minimapProportionalLines": false,
     "saropaLogCapture.minimapShowSqlDensity": false

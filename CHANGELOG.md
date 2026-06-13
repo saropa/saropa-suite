@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Publish script no longer aborts when npm's global bin is off PATH** — `ensure_vsce`/`ensure_ovsx` previously failed with "vsce was installed but is not on PATH" whenever the npm global prefix (e.g. `C:\Users\<user>\AppData\Roaming\npm`) was missing from the shell PATH, even though the install succeeded. They now resolve the prefix via `npm config get prefix` and prepend the global bin directory to the process PATH before the reachability check, so every `vsce`/`ovsx` subprocess works regardless of shell PATH state (`scripts/modules/npm_tools.py`).
+
 ### Changed
 
 - **README feature list** — added Log Capture's Crashlytics & Vitals panel (Firebase crash issues, crash-free users/sessions, trend sparklines, issue archiving, background alerts) and the interactive Session Flow Map to the Log Capture section, and clarified Drift Advisor's security posture as secure-by-default (loopback-only binding, no wildcard CORS).
