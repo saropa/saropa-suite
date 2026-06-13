@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Version promotion no longer leaves an empty `[Unreleased]` placeholder** — when promoting `## [Unreleased]` to a numbered release, the publish script now renames the heading in place instead of seeding a fresh empty `## [Unreleased]` above the new version. An empty heading directly above the latest release was noise; the next release's changes get a new `## [Unreleased]` heading when they are written (`scripts/modules/version.py`).
+
 ## [1.0.6]
 
 ### Added

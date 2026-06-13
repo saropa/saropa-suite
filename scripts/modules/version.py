@@ -77,9 +77,12 @@ def promote_unreleased(changelog_path: Path, bump: str = "patch") -> str | None:
          one bullet entry under it (an empty section is nothing to ship).
       2. Computes the next version by bumping the latest released version
          (the first ``## [x.y.z]`` heading) at *bump* level.
-      3. Renames the Unreleased heading to ``## [x.y.z]`` and inserts a
-         fresh empty ``## [Unreleased]`` above it so future changes still
-         have a home.
+      3. Renames the Unreleased heading to ``## [x.y.z]`` in place.
+
+    No empty ``## [Unreleased]`` placeholder is left behind — an empty
+    heading sitting directly above the new version is noise. The next
+    release's changes get a fresh ``## [Unreleased]`` heading when they
+    are written.
 
     Returns the new version string, or None when there is nothing to
     promote (no Unreleased heading, or it has no entries) — in which case
@@ -111,9 +114,9 @@ def promote_unreleased(changelog_path: Path, bump: str = "patch") -> str | None:
     latest = read_changelog_version(changelog_path)
     new_version = _bump(latest, bump)
 
-    # Rename the Unreleased heading to the new version and seed a fresh
-    # empty Unreleased above it for the next cycle.
-    replacement = f"## [Unreleased]\n\n## [{new_version}]"
+    # Rename the Unreleased heading to the new version in place. No empty
+    # placeholder is seeded — the next release writes its own heading.
+    replacement = f"## [{new_version}]"
     content = content[: heading_match.start()] + replacement + content[heading_match.end():]
     changelog_path.write_text(content, encoding="utf-8")
 
