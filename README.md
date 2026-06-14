@@ -10,7 +10,6 @@ Installing the full Saropa Suite unlocks native, cross-extension APIs that drama
 
 * **Log Capture + Lints:** Exported bug reports become actually useful. Log Capture natively cross-references runtime errors with static analysis findings. It embeds lint violations (filtered by impact), OWASP executive summaries, and overall project health scores directly into your logs. Stale lint data is automatically refreshed before report generation.
 * **Log Capture + Drift Advisor:** Your debugging sessions now carry deep database context. Session metadata bundles query performance stats, schema summaries, anomaly counts, and index suggestions. Right-click any SQL line in your logs to instantly "Open in Drift Advisor" to profile and optimize the query. Root-cause log hints will actively reference Drift database issues.
-* **Lints + Saropa Dart Utils:** When your project depends on [`saropa_dart_utils`](https://pub.dev/packages/saropa_dart_utils), Lints activates a migration rule pack that spots hand-rolled code the library already solves and offers a one-click fix to the library helper — and Package Vibrancy nudges you when a newer version is available. No extra extension: the pack and the upgrade nudge surface inside Saropa Lints, and only activate when the package is actually a dependency.
 
 ```
                      ┌───────────────────┐
@@ -101,11 +100,11 @@ Installing the full Saropa Suite unlocks native, cross-extension APIs that drama
 ### [Saropa Dart Utils](https://pub.dev/packages/saropa_dart_utils)
 **280+ production-hardened extension methods** extracted from real Flutter apps — null-safe accessors, parsing/validation helpers, collection and date utilities, with edge cases (empty, null, Unicode, extremes) already handled.
 
-This is a pure Dart **library**, not a VS Code extension — so it is not bundled in the install. It is the suite's **remediation layer**: the safe primitives the other tools' fixes steer you toward. The connection is two-way and surfaces entirely through Saropa Lints:
+This is a pure Dart **library**, not a VS Code extension — so it is not bundled in the install. It is the suite's **remediation layer**: the safe primitives the other tools' fixes steer you toward.
 
-- **Migration rule pack** — add `saropa_dart_utils` to your `pubspec.yaml` and Lints turns on type-aware "prefer the library" rules with quick fixes that replace hand-rolled code with the matching helper. The pack only activates when the package is a resolved dependency.
-- **Crash-to-fix loop** — where Lints maps a crash class to the rule that prevents it (`.first` on an empty list, an out-of-range index), the suggested fix resolves to the matching safe helper in this library.
-- **Version-upgrade nudge** — Package Vibrancy flags an out-of-date `saropa_dart_utils` and offers the bump.
+- **Migration scanner (available today)** — the package ships a `suggest_saropa_utils` command-line scanner that walks your project, finds hand-rolled code the library already solves, and prints the helper to use instead (e.g. a manual `name[0].toUpperCase() + name.substring(1)` → `name.capitalize()`). Every suggestion is audited against the real API and checked to not degrade your code.
+- **Crash-to-fix loop (concept)** — where Lints maps a crash class to the rule that prevents it (`.first` on an empty list, an out-of-range index), the matching safe helper lives in this library.
+- **In-editor diagnostics + version-upgrade nudge (planned)** — porting the scanner's patterns into Saropa Lints (in-editor quick fixes) and surfacing out-of-date `saropa_dart_utils` through Package Vibrancy are the next step, not yet shipped.
 
 ---
 
