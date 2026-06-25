@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- cspell:disable -->
 
+## [1.0.8]
+
+### Added
+
+- **Saropa Workspace added to the suite** — `saropa.saropa-workspace` is now bundled in `extensionPack`, making the suite a four-extension install. Saropa Workspace is a project-aware launcher: pin any file or script as a favorite (single-click opens, double-click runs), with project/global scopes, scheduling, auto-detected recipes, groups, and run-target inference. The README "What's Included" section, "Better Together" integrations, suite description, keywords, and architecture diagram were updated to include it, and its icon was added to `images/` (`package.json`, `README.md`, `images/icon_saropa_workspace.png`).
+
 ## [1.0.7]
 
 ### Changed

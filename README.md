@@ -1,6 +1,6 @@
 # Saropa Suite
 
-One-click install for the full Saropa developer toolkit. **Saropa Suite** bundles three powerful VS Code extensions to fortify your Flutter and Dart development workflow, providing persistent logging, strict behavioral analysis, and comprehensive local database diagnostics.
+One-click install for the full Saropa developer toolkit. **Saropa Suite** bundles four powerful VS Code extensions to fortify your Flutter and Dart development workflow, providing persistent logging, strict behavioral analysis, comprehensive local database diagnostics, and a fast project-aware launcher for your files and scripts.
 
 ---
 
@@ -10,8 +10,16 @@ Installing the full Saropa Suite unlocks native, cross-extension APIs that drama
 
 * **Log Capture + Lints:** Exported bug reports become actually useful. Log Capture natively cross-references runtime errors with static analysis findings. It embeds lint violations (filtered by impact), OWASP executive summaries, and overall project health scores directly into your logs. Stale lint data is automatically refreshed before report generation.
 * **Log Capture + Drift Advisor:** Your debugging sessions now carry deep database context. Session metadata bundles query performance stats, schema summaries, anomaly counts, and index suggestions. Right-click any SQL line in your logs to instantly "Open in Drift Advisor" to profile and optimize the query. Root-cause log hints will actively reference Drift database issues.
+* **Workspace + the suite:** Pin the rest of the toolkit's entry points as one-click favorites — run a Lints analysis, launch a Log Capture repro script, or kick off a Drift Advisor seed/migration — so the tools you installed together are always one action away, from a single sidebar.
 
 ```
+                  ┌─────────────────────────┐
+                  │     Saropa Workspace    │
+                  │  Pin & run files,       │
+                  │  scripts, entry points  │
+                  └────────────┬────────────┘
+                               │  Launches
+                               ▼
                      ┌───────────────────┐
                      │   SAROPA  SUITE   │
                      └─────────┬─────────┘
@@ -93,6 +101,16 @@ Installing the full Saropa Suite unlocks native, cross-extension APIs that drama
 <img src="images/screenshots/health.png" alt="Database health check scanning tables" width="450">
 <img src="images/screenshots/perf.png" alt="Query performance profiler tracking slow queries" width="450">
 
+### <img src="images/icon_saropa_workspace.png" width="28" align="top"> [Saropa Workspace](https://marketplace.visualstudio.com/items?itemName=saropa.saropa-workspace)
+**Project-Aware Launcher:** Pin any file or script as a favorite — single-click to open it, double-click to run it. Turns the configs, docs, and scripts you reach for constantly into one-action shortcuts from a dedicated sidebar.
+
+- **Pin & open** — pin from the editor title or Explorer right-click into **Project Pins** (stored in `.vscode/saropa-workspace.json`, shared through the repo) or **Global Pins** (synced via VS Code Settings Sync). Single-click opens.
+- **Run scripts** — double-click (or the inline play button) runs a pinned script with its own command prefix, CLI args, working directory, and environment. Choose the integrated terminal or a background output channel; placeholder and interactive tokens parameterize one pin instead of many.
+- **Schedule** — run a pinned script at a time of day, on a repeating interval, or both, in-process while VS Code is open, with the next run shown in the status bar.
+- **Recipes & run-target inference** — auto-detected pins from your `.git/config` and manifests (open the repo/PR/CI, run dev/test/lint/build, `docker compose up`, db migrate), plus the right run command inferred from `package.json` scripts, a Makefile, or a shebang.
+- **Organize & access fast** — named groups with drag-to-reorder, per-pin icon and color, a **Recent** group, **Run Pin…** palette quick-pick, and bindable **Run Top Pin 1–5** keybindings.
+- **Auto-pins, suggestions & import** — common project files surfaced automatically, a pin suggestion for files you open often, and one-time import of existing `.favorites.json` shortcuts.
+
 ---
 
 ## 📦 Foundation Library: Saropa Dart Utils
@@ -111,7 +129,7 @@ This is a pure Dart **library**, not a VS Code extension — so it is not bundle
 ## 🚀 Getting Started
 
 1. Install **Saropa Suite** from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=saropa.saropa-suite).
-2. All three extensions are installed and activated automatically.
+2. All four extensions are installed and activated automatically.
 3. No configuration required — each extension works out of the box.
 
 ---

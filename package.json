@@ -1,8 +1,8 @@
 {
     "name": "saropa-suite",
     "displayName": "Saropa Suite",
-    "description": "One-click install for the full integrated Saropa developer toolkit: Log Capture, Drift Advisor, and Lints.",
-    "version": "1.0.7",
+    "description": "One-click install for the full integrated Saropa developer toolkit: Log Capture, Drift Advisor, Lints, and Workspace.",
+    "version": "1.0.8",
     "publisher": "saropa",
     "license": "MIT",
     "icon": "images/icon.png",
@@ -18,13 +18,16 @@
         "debug",
         "drift",
         "lints",
+        "workspace",
+        "favorites",
         "flutter",
         "dart"
     ],
     "extensionPack": [
         "saropa.saropa-log-capture",
         "saropa.saropa-lints",
-        "saropa.drift-viewer"
+        "saropa.drift-viewer",
+        "saropa.saropa-workspace"
     ],
     "repository": {
         "type": "git",
