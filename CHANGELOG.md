@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- cspell:disable -->
 
+## [1.0.9]
+
+### Added
+
+- **Saropa Chat Explorer added to the suite** — `saropa.claude-chat-explorer` is now bundled in `extensionPack`, making the suite a five-extension install. Saropa Chat Explorer is full-text search of your Claude Code session history: find a session by any word, file, command, branch or PR, see which session edited a file, check a session's git state, and resume it from the sidebar. The README "What's Included" section, "Better Together" integrations, suite description, keywords, and architecture diagram were updated to include it, and its icon was added to `images/` (`package.json`, `README.md`, `images/icon_saropa_chat_explorer.png`).
+
 ## [1.0.8]
 
 ### Added

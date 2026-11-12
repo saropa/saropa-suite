@@ -1,6 +1,6 @@
 # Saropa Suite
 
-One-click install for the full Saropa developer toolkit. **Saropa Suite** bundles four powerful VS Code extensions to fortify your Flutter and Dart development workflow, providing persistent logging, strict behavioral analysis, comprehensive local database diagnostics, and a fast project-aware launcher for your files and scripts.
+One-click install for the full Saropa developer toolkit. **Saropa Suite** bundles five powerful VS Code extensions to fortify your Flutter and Dart development workflow, providing persistent logging, strict behavioral analysis, comprehensive local database diagnostics, a fast project-aware launcher for your files and scripts, and full-text search of your Claude Code session history.
 
 ---
 
@@ -11,14 +11,16 @@ Installing the full Saropa Suite unlocks native, cross-extension APIs that drama
 * **Log Capture + Lints:** Exported bug reports become actually useful. Log Capture natively cross-references runtime errors with static analysis findings. It embeds lint violations (filtered by impact), OWASP executive summaries, and overall project health scores directly into your logs. Stale lint data is automatically refreshed before report generation.
 * **Log Capture + Drift Advisor:** Your debugging sessions now carry deep database context. Session metadata bundles query performance stats, schema summaries, anomaly counts, and index suggestions. Right-click any SQL line in your logs to instantly "Open in Drift Advisor" to profile and optimize the query. Root-cause log hints will actively reference Drift database issues.
 * **Workspace + the suite:** Pin the rest of the toolkit's entry points as one-click favorites — run a Lints analysis, launch a Log Capture repro script, or kick off a Drift Advisor seed/migration — so the tools you installed together are always one action away, from a single sidebar.
+* **Chat Explorer + the suite:** Find the Claude Code session that worked on your project. Search your session history by word, file, command, branch or PR, see which session edited a file, and resume it from the sidebar.
 
 ```
-                  ┌─────────────────────────┐
-                  │     Saropa Workspace    │
-                  │  Pin & run files,       │
-                  │  scripts, entry points  │
-                  └────────────┬────────────┘
-                               │  Launches
+┌─────────────────────────┐         ┌─────────────────────────┐
+│     Saropa Workspace    │         │   Saropa Chat Explorer  │
+│  Pin & run files,       │         │  Search & resume Claude │
+│  scripts, entry points  │         │  Code session history   │
+└────────────┬────────────┘         └────────────┬────────────┘
+             │  Launches                         │  Session search
+             └─────────────────┬─────────────────┘
                                ▼
                      ┌───────────────────┐
                      │   SAROPA  SUITE   │
@@ -111,6 +113,17 @@ Installing the full Saropa Suite unlocks native, cross-extension APIs that drama
 - **Organize & access fast** — named groups with drag-to-reorder, per-pin icon and color, a **Recent** group, **Run Pin…** palette quick-pick, and bindable **Run Top Pin 1–5** keybindings.
 - **Auto-pins, suggestions & import** — common project files surfaced automatically, a pin suggestion for files you open often, and one-time import of existing `.favorites.json` shortcuts.
 
+### <img src="images/icon_saropa_chat_explorer.png" width="28" align="top"> [Saropa Chat Explorer](https://marketplace.visualstudio.com/items?itemName=saropa.claude-chat-explorer)
+**Search and Resume Claude Code Sessions:** Full-text search of your Claude Code session history. Find an old session by any word or phrase, see which session edited a file, check a session's git state, and resume it from the sidebar. Indexes `~/.claude/projects` locally in a worker thread, with no runtime dependencies.
+
+- **Full-text search** — includes subagent transcripts, with search tokens (`file:`, `edited:`, `cmd:`, `tag:`, `sha:`, `pr:`, `branch:`, `from:`, `last:`), exact-phrase, any-order, case, whole-word and regex matching, and filters by time, sender and scope.
+- **Resume from the sidebar** — click a result to resume that session (needs the Claude Code extension), or expand it to read the matching messages.
+- **Which session edited this file?** — from the Explorer, editor or tab menu.
+- **Git state in each session card** — branch, open pull request, uncommitted files, unpushed commits and worktrees, plus a Project Status page grouping branches, worktrees, PRs and sessions by what to do next.
+- **Live status** — status dots for running, waiting, unread and background sessions, a count badge for sessions waiting on you, and a warning when a live session nears a full context window.
+- **Account & Usage** — your Claude Code account and tokens used per session, per branch and over recent hours and days, plus a read-only Claude Config review.
+- **Local by default** — sessions are indexed on your machine. The pull request lookup (on by default, can be turned off) runs your own `gh` command; Web (cloud) sessions are off unless you opt in.
+
 ---
 
 ## 📦 Foundation Library: Saropa Dart Utils
@@ -129,7 +142,7 @@ This is a pure Dart **library**, not a VS Code extension — so it is not bundle
 ## 🚀 Getting Started
 
 1. Install **Saropa Suite** from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=saropa.saropa-suite).
-2. All four extensions are installed and activated automatically.
+2. All five extensions are installed and activated automatically.
 3. No configuration required — each extension works out of the box.
 
 ---
