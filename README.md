@@ -9,8 +9,8 @@ One-click install for the full Saropa developer toolkit. **Saropa Suite** bundle
 Installing the full Saropa Suite unlocks native, cross-extension APIs that dramatically speed up your workflow:
 
 * **Capture + Lints:** Exported bug reports become actually useful. Saropa Capture natively cross-references runtime errors with static analysis findings. It embeds lint violations (filtered by impact), OWASP executive summaries, and overall project health scores directly into your logs. Stale lint data is automatically refreshed before report generation.
-* **Capture + Drift Advisor:** Your debugging sessions now carry deep database context. Session metadata bundles query performance stats, schema summaries, anomaly counts, and index suggestions. Right-click any SQL line in your logs to instantly "Open in Drift Advisor" to profile and optimize the query. Root-cause log hints will actively reference Drift database issues.
-* **Workspace + the suite:** Pin the rest of the toolkit's entry points as one-click favorites — run a Lints analysis, launch a Saropa Capture repro script, or kick off a Drift Advisor seed/migration — so the tools you installed together are always one action away, from a single sidebar. Saropa Capture also exposes a signal-delta API: bracket a command run with two log markers and ask what errors, warnings, or performance signals changed in between.
+* **Capture + Drift:** Your debugging sessions now carry deep database context. Session metadata bundles query performance stats, schema summaries, anomaly counts, and index suggestions. Right-click any SQL line in your logs to instantly "Open in Saropa Drift" to profile and optimize the query. Root-cause log hints will actively reference Drift database issues.
+* **Workspace + the suite:** Pin the rest of the toolkit's entry points as one-click favorites — run a Lints analysis, launch a Saropa Capture repro script, or kick off a Saropa Drift seed/migration — so the tools you installed together are always one action away, from a single sidebar. Saropa Capture also exposes a signal-delta API: bracket a command run with two log markers and ask what errors, warnings, or performance signals changed in between.
 * **Chats + the suite:** Find the Claude Code session that worked on your project. Search your session history by word, file, command, branch or PR, see which session edited a file, and resume it from the sidebar.
 
 ```
@@ -28,7 +28,7 @@ Installing the full Saropa Suite unlocks native, cross-extension APIs that drama
                ┌───────────────┴───────────────┐
                │                               │
   ┌────────────┴─────────────┐   ┌─────────────┴────────────┐
-  │       Saropa Lints       │   │   Saropa Drift Advisor   │
+  │       Saropa Lints       │   │       Saropa Drift       │
   │                          │   │                          │
   │  Static Behavioral &     │   │  Local DB Analysis &     │
   │  Security Analysis       │   │  Query Profiling         │
@@ -90,7 +90,7 @@ Installing the full Saropa Suite unlocks native, cross-extension APIs that drama
 <img src="images/screenshots/20260401_problems_tab.png" alt="Flutter memory leak detection in VS Code" width="450">
 <img src="images/screenshots/20260401_AI_solver_tab.png" alt="AI fixing security vulnerability" width="450">
 
-### <img src="images/icon_saropa_drift_advisor.png" width="28" align="top"> [Saropa Drift Advisor](https://marketplace.visualstudio.com/items?itemName=saropa.drift-viewer)
+### <img src="images/icon_saropa_drift_advisor.png" width="28" align="top"> [Saropa Drift](https://marketplace.visualstudio.com/items?itemName=saropa.drift-viewer)
 **Deep SQLite/Drift Debugging:** A two-client debug platform — a lightweight HTTP server in your app (zero third-party runtime dependencies) paired with both a browser UI and a VS Code extension. Not just a table viewer; a complete database diagnostic suite.
 
 - **Data browsing** — multi-table tabs with foreign key navigation and breadcrumb trails, PII masking (50+ column patterns), data type toggle (raw SQLite ↔ human-readable), and one-click cell copy.
