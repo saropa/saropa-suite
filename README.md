@@ -55,25 +55,25 @@ Installing the full Saropa Suite unlocks native, cross-extension APIs that drama
 ## 🛠️ What's Included
 
 ### <img src="images/icon_saropa_log_capture.png" width="28" align="top"> [Saropa Capture](https://marketplace.visualstudio.com/items?itemName=saropa.saropa-capture)
-**Persistent debug logging.** Saves every debug session to searchable log files instead of losing the Debug Console when you stop. Works with any debug adapter, with a fast log viewer, error classification, Crashlytics and Vitals, SQL diagnostics, session comparison and replay, and rich exports. [Full README](https://github.com/saropa/saropa-log-capture#readme)
+**Persistent debug logging.** Saves every debug session to searchable log files instead of losing the Debug Console when you stop. Works with any debug adapter, with a fast log viewer, error classification, Crashlytics and Vitals, SQL diagnostics, session comparison and replay, and rich exports. [Full README](https://github.com/saropa/saropa-log-capture/blob/main/README.md)
 
 <img src="images/screenshots/20260414_project_log_view.png" alt="Log viewer with colored severity markers" width="450">
 
 ### <img src="images/icon_saropa_lints.png" width="28" align="top"> [Saropa Lints](https://marketplace.visualstudio.com/items?itemName=saropa.saropa-lints)
-**Strict behavioral analysis for Dart and Flutter.** 2,300+ lint rules and quick fixes that catch runtime errors, memory leaks and security issues standard linters miss: OWASP-mapped security rules, library-specific audits, a tiered adoption system, Package Vibrancy dependency scoring, and a VS Code health dashboard. [Full README](https://github.com/saropa/saropa_lints#readme)
+**Strict behavioral analysis for Dart and Flutter.** 2,300+ lint rules and quick fixes that catch runtime errors, memory leaks and security issues standard linters miss: OWASP-mapped security rules, library-specific audits, a tiered adoption system, Package Vibrancy dependency scoring, and a VS Code health dashboard. [Full README](https://github.com/saropa/saropa_lints/blob/main/README.md)
 
 <img src="images/screenshots/20260401_problems_tab.png" alt="Flutter memory leak detection in VS Code" width="450">
 
 ### <img src="images/icon_saropa_drift_advisor.png" width="28" align="top"> [Saropa Drift](https://marketplace.visualstudio.com/items?itemName=saropa.drift-viewer)
-**SQLite/Drift debugging.** A lightweight in-app server paired with a browser UI and a VS Code extension: data browsing, a SQL console and notebook, schema and ER diagrams, data-quality and anomaly checks, snapshots and time travel, and query performance profiling. [Full README](https://github.com/saropa/saropa_drift_advisor#readme)
+**SQLite/Drift debugging.** A lightweight in-app server paired with a browser UI and a VS Code extension: data browsing, a SQL console and notebook, schema and ER diagrams, data-quality and anomaly checks, snapshots and time travel, and query performance profiling. [Full README](https://github.com/saropa/saropa_drift_advisor/blob/main/README.md)
 
 <img src="images/screenshots/health.png" alt="Database health check scanning tables" width="450">
 
 ### <img src="images/icon_saropa_workspace.png" width="28" align="top"> [Saropa Workspace](https://marketplace.visualstudio.com/items?itemName=saropa.saropa-workspace)
-**Project-aware launcher.** Pin any file or script as a favorite (single-click opens, double-click runs), with project and global scopes, scheduling, auto-detected recipes, plus a Release Board and HubGrid for work items and GitHub issues. [Full README](https://github.com/saropa/saropa_workspace#readme)
+**Project-aware launcher.** Pin any file or script as a favorite (single-click opens, double-click runs), with project and global scopes, scheduling, auto-detected recipes, plus a Release Board and HubGrid for work items and GitHub issues. [Full README](https://github.com/saropa/saropa_workspace/blob/main/README.md)
 
 ### <img src="images/icon_saropa_chat_explorer.png" width="28" align="top"> [Saropa Chats](https://marketplace.visualstudio.com/items?itemName=saropa.claude-chat-explorer)
-**Search and resume Claude Code sessions.** Full-text search of your session history, which session edited a file, git state per session, live status and context warnings, an Activity diagram, and Account & Usage. Indexed locally. [Full README](https://github.com/saropa/claude-chat-explorer#readme)
+**Search and resume Claude Code sessions.** Full-text search of your session history, which session edited a file, git state per session, live status and context warnings, an Activity diagram, and Account & Usage. Indexed locally. [Full README](https://github.com/saropa/claude-chat-explorer/blob/main/README.md)
 
 ---
 
@@ -82,7 +82,7 @@ Installing the full Saropa Suite unlocks native, cross-extension APIs that drama
 ### [Saropa Dart Utils](https://pub.dev/packages/saropa_dart_utils)
 **280+ production-hardened extension methods** extracted from real Flutter apps — null-safe accessors, parsing/validation helpers, collection and date utilities, with edge cases (empty, null, Unicode, extremes) already handled.
 
-A pure Dart **library**, not a VS Code extension, so it is not bundled in the install. It is the suite's remediation layer: the safe primitives the other tools' fixes steer you toward, plus a `suggest_saropa_utils` scanner that finds hand-rolled code the library already solves. [Full README](https://github.com/saropa/saropa_dart_utils#readme)
+A pure Dart **library**, not a VS Code extension, so it is not bundled in the install. It is the suite's remediation layer: the safe primitives the other tools' fixes steer you toward, plus a `suggest_saropa_utils` scanner that finds hand-rolled code the library already solves. [Full README](https://github.com/saropa/saropa_dart_utils/blob/main/README.md)
 
 ---
 
