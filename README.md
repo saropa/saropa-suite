@@ -72,8 +72,12 @@ Installing the full Saropa Suite unlocks native, cross-extension APIs that drama
 ### <img src="images/icon_saropa_workspace.png" width="28" align="top"> [Saropa Workspace](https://marketplace.visualstudio.com/items?itemName=saropa.saropa-workspace)
 **Project-aware launcher.** Pin any file or script as a favorite (single-click opens, double-click runs), with project and global scopes, scheduling, auto-detected recipes, plus a Release Board and HubGrid for work items and GitHub issues. [Full README](https://github.com/saropa/saropa_workspace/blob/main/README.md)
 
+<img src="images/screenshots/workspace_sidebar_schedule.png" alt="Saropa Workspace sidebar with shortcuts, recipes and a schedule editor" width="450">
+
 ### <img src="images/icon_saropa_chat_explorer.png" width="28" align="top"> [Saropa Chats](https://marketplace.visualstudio.com/items?itemName=saropa.claude-chat-explorer)
 **Search and resume Claude Code sessions.** Full-text search of your session history, which session edited a file, git state per session, live status and context warnings, an Activity diagram, and Account & Usage. Indexed locally. [Full README](https://github.com/saropa/claude-chat-explorer/blob/main/README.md)
+
+<img src="images/screenshots/chats_session_manager_and_activity.png" alt="Saropa Chats session manager and Activity diagram" width="250">
 
 ---
 
