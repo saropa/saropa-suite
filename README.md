@@ -10,7 +10,7 @@ Installing the full Saropa Suite unlocks native, cross-extension APIs that drama
 
 * **Capture + Lints:** Exported bug reports become actually useful. Saropa Capture natively cross-references runtime errors with static analysis findings. It embeds lint violations (filtered by impact), OWASP executive summaries, and overall project health scores directly into your logs. Stale lint data is automatically refreshed before report generation.
 * **Capture + Drift Advisor:** Your debugging sessions now carry deep database context. Session metadata bundles query performance stats, schema summaries, anomaly counts, and index suggestions. Right-click any SQL line in your logs to instantly "Open in Drift Advisor" to profile and optimize the query. Root-cause log hints will actively reference Drift database issues.
-* **Workspace + the suite:** Pin the rest of the toolkit's entry points as one-click favorites — run a Lints analysis, launch a Saropa Capture repro script, or kick off a Drift Advisor seed/migration — so the tools you installed together are always one action away, from a single sidebar.
+* **Workspace + the suite:** Pin the rest of the toolkit's entry points as one-click favorites — run a Lints analysis, launch a Saropa Capture repro script, or kick off a Drift Advisor seed/migration — so the tools you installed together are always one action away, from a single sidebar. Saropa Capture also exposes a signal-delta API: bracket a command run with two log markers and ask what errors, warnings, or performance signals changed in between.
 * **Chats + the suite:** Find the Claude Code session that worked on your project. Search your session history by word, file, command, branch or PR, see which session edited a file, and resume it from the sidebar.
 
 ```
@@ -65,6 +65,9 @@ Installing the full Saropa Suite unlocks native, cross-extension APIs that drama
 - **SQL diagnostics** — query fingerprinting, N+1 detection, slow query burst markers, and cross-session SQL comparison with Drift ORM support.
 - **Session management** — side-by-side session comparison (2 or 3 logs at once), session replay with scrubber/speed controls, an interactive Session Flow Map diagram with pan/zoom and per-node detail, deep links (vscode:// URLs), active case investigations, and collapsible daily groupings.
 - **Rich export** — HTML (static or interactive), CSV, JSON, JSONL, shareable `.slc` bundles, Grafana Loki push, and markdown with full metadata. Per-level export presets (Errors Only, Production Ready, Full Debug, Performance Analysis).
+- **Safer sharing** — exports redact bearer/Authorization tokens, query-string secrets, and user-home paths, and "Explain with AI" prompts flag captured log text as untrusted data so a model never treats it as instructions.
+- **Sibling-extension API** — `insertMarker()` and `getSignalDelta()` let other tools bracket a run with markers and read back the errors, warnings, and performance signals that changed.
+- **Seamless rename** — existing `saropaLogCapture.*` settings are migrated on first start and old command IDs stay registered as aliases. Uninstall the old "Saropa Log Capture" extension after installing Saropa Capture.
 - **20+ integration adapters** — opt-in session context from Git state, test results, code coverage, crash dumps, Docker, performance snapshots, terminal output, HTTP/network, browser DevTools, and more.
 
 <img src="images/screenshots/20260414_project_log_view.png" alt="Log viewer with colored severity markers" width="450">
@@ -81,7 +84,8 @@ Installing the full Saropa Suite unlocks native, cross-extension APIs that drama
 - **Package Vibrancy scoring** — dependency health scanning with ecosystem adoption metrics, replacement complexity analysis, file usage tracking, GitHub issues/PRs counts, README galleries, and version-gap PR triage.
 - **VS Code dashboard** — health score (0–100), issues tree grouped by severity/file/rule, OWASP coverage matrix, file risk rankings, rule triage UI, score trends over time, and a searchable catalog of 117+ commands.
 - **AI-optimized diagnostics** — every diagnostic is formatted as a paste-ready AI repair prompt for Cursor, Copilot, and Windsurf.
-- **Cross-file CLI** — detect unused files, circular imports, and generate import graphs (DOT format for Graphviz).
+- **Cross-file CLI** — detect unused files, circular imports, and generate import graphs (DOT format for Graphviz). The `scan` command takes `--files`, `--exclude-globs`/`--include-globs`, and `--strict-files` (exit non-zero if any named file is skipped) for CI.
+- **Rules & Tiers control** — turn a rule off straight from a rule-search result or the "Explain rule" panel, without a trip to the Overrides tab.
 
 <img src="images/screenshots/20260401_problems_tab.png" alt="Flutter memory leak detection in VS Code" width="450">
 <img src="images/screenshots/20260401_AI_solver_tab.png" alt="AI fixing security vulnerability" width="450">
@@ -90,9 +94,9 @@ Installing the full Saropa Suite unlocks native, cross-extension APIs that drama
 **Deep SQLite/Drift Debugging:** A two-client debug platform — a lightweight HTTP server in your app (zero third-party runtime dependencies) paired with both a browser UI and a VS Code extension. Not just a table viewer; a complete database diagnostic suite.
 
 - **Data browsing** — multi-table tabs with foreign key navigation and breadcrumb trails, PII masking (50+ column patterns), data type toggle (raw SQLite ↔ human-readable), and one-click cell copy.
-- **Query tools** — SQL runner with autocomplete and 200-entry history, visual query builder (SELECT/WHERE/ORDER BY/LIMIT), natural language "Ask in English" → SQL, multi-statement **SQL Notebook**, and color-coded **EXPLAIN panel** with index suggestions.
+- **Query tools** — a **SQL Console** in the sidebar (statements are checked as you type; writes ask before running; last 20 kept in history), SQL runner with autocomplete and 200-entry history, visual query builder (SELECT/WHERE/ORDER BY/LIMIT), natural language "Ask in English" → SQL, multi-statement **SQL Notebook**, and color-coded **EXPLAIN panel** with index suggestions.
 - **Data visualization** — bar, stacked bar, pie, line, area, scatter, and histogram charts from SQL results with PNG/SVG export.
-- **Data quality** — anomaly detection (NULLs, orphaned FKs, duplicates, numeric outliers with severity), health score (0–100 with letter grade A–F), index suggestions with ready-to-use SQL, and storage analytics with table sizes and journal mode.
+- **Data quality** — suppress a diagnostic by column name across every table, anomaly detection (NULLs, orphaned FKs, duplicates, numeric outliers with severity), health score (0–100 with letter grade A–F), index suggestions with ready-to-use SQL, and storage analytics with table sizes and journal mode.
 - **Schema intelligence** — live schema SQL, ER diagrams with FK relationship lines, schema diff (code-defined vs runtime), offline Dart workspace scanning for Drift `Table` classes, Isar-to-Drift converter, migration preview/codegen, and rollback generator.
 - **Time travel** — snapshots with diff comparison and export, timeline auto-capture on data change, database comparison (schema match, row counts, migration DDL), row comparator, and query regression detection across sessions.
 - **Performance profiling** — query execution times, slow-query detection (configurable threshold), mutation stream with real-time INSERT/UPDATE/DELETE feed, and watch panel with live polling and diff highlighting.
@@ -111,17 +115,20 @@ Installing the full Saropa Suite unlocks native, cross-extension APIs that drama
 - **Schedule** — run a pinned script at a time of day, on a repeating interval, or both, in-process while VS Code is open, with the next run shown in the status bar.
 - **Recipes & run-target inference** — auto-detected pins from your `.git/config` and manifests (open the repo/PR/CI, run dev/test/lint/build, `docker compose up`, db migrate), plus the right run command inferred from `package.json` scripts, a Makefile, or a shebang.
 - **Organize & access fast** — named groups with drag-to-reorder, per-pin icon and color, a **Recent** group, **Run Pin…** palette quick-pick, and bindable **Run Top Pin 1–5** keybindings.
+- **HubGrid** — a table of open issues and pull requests from every watched GitHub repo, newest first, with per-repo filters, new-item dots, and rate-limit notices.
+- **Release Board** — a Gantt and board view of the work items in your project's `plans/` and `bugs/` documents: what blocks the next release, what comes first, an "Up next" list, per-project status, and groups you can rename, recolor, merge, or tag.
 - **Auto-pins, suggestions & import** — common project files surfaced automatically, a pin suggestion for files you open often, and one-time import of existing `.favorites.json` shortcuts.
 
 ### <img src="images/icon_saropa_chat_explorer.png" width="28" align="top"> [Saropa Chats](https://marketplace.visualstudio.com/items?itemName=saropa.claude-chat-explorer)
 **Search and Resume Claude Code Sessions:** Full-text search of your Claude Code session history. Find an old session by any word or phrase, see which session edited a file, check a session's git state, and resume it from the sidebar. Indexes `~/.claude/projects` locally in a worker thread, with no runtime dependencies.
 
 - **Full-text search** — includes subagent transcripts, with search tokens (`file:`, `edited:`, `cmd:`, `tag:`, `sha:`, `pr:`, `branch:`, `from:`, `last:`), exact-phrase, any-order, case, whole-word and regex matching, and filters by time, sender and scope.
-- **Resume from the sidebar** — click a result to resume that session (needs the Claude Code extension), or expand it to read the matching messages.
+- **Resume from the sidebar** — click a result to resume that session (needs the Claude Code extension), or expand it to read the matching messages. A **New session** button starts a fresh one, and **Clean up** archives every session except the ones open or pinned (nothing is deleted).
 - **Which session edited this file?** — from the Explorer, editor or tab menu.
 - **Git state in each session card** — branch, open pull request, uncommitted files, unpushed commits and worktrees, plus a Project Status page grouping branches, worktrees, PRs and sessions by what to do next.
 - **Live status** — status dots for running, waiting, unread and background sessions, a count badge for sessions waiting on you, and a warning when a live session nears a full context window.
-- **Account & Usage** — your Claude Code account and tokens used per session, per branch and over recent hours and days, plus a read-only Claude Config review.
+- **Activity diagram** — a live diagram under the session list that flashes as Claude chats, reads memory and files, runs terminal commands, browses the web, or calls agents; it shows when Claude is waiting for you and flags errors.
+- **Account & Usage** — a simple view that follows the native Claude Code layout: your account and plan, tokens used in the last 5 hours, today and the last 7 days, plus per-session and per-branch totals, plus a read-only Claude Config review.
 - **Local by default** — sessions are indexed on your machine. The pull request lookup (on by default, can be turned off) runs your own `gh` command; Web (cloud) sessions are off unless you opt in.
 
 ---
