@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- cspell:disable -->
 
+## [Unreleased]
+
+### Changed
+
+- **README updated for upstream renames** — Saropa Log Capture is now **Saropa Capture** (extension ID `saropa.saropa-capture`, v9.8.0) and Saropa Chat Explorer is now **Saropa Chats** (ID unchanged). Names, Marketplace link, integration bullets and the architecture diagram updated; Lints rule count raised to 2,300+ (`README.md`). Pack member `saropa.saropa-log-capture` replaced with `saropa.saropa-capture` and the description updated (`package.json`).
+
 ## [1.0.9]
 
 ### Added

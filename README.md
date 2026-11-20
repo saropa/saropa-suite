@@ -1,6 +1,6 @@
 # Saropa Suite
 
-One-click install for the full Saropa developer toolkit. **Saropa Suite** bundles five powerful VS Code extensions to fortify your Flutter and Dart development workflow, providing persistent logging, strict behavioral analysis, comprehensive local database diagnostics, a fast project-aware launcher for your files and scripts, and full-text search of your Claude Code session history.
+One-click install for the full Saropa developer toolkit. **Saropa Suite** bundles five powerful VS Code extensions to fortify your Flutter and Dart development workflow, providing persistent capture of debug output, strict behavioral analysis, comprehensive local database diagnostics, a fast project-aware launcher for your files and scripts, and full-text search of your Claude Code session history.
 
 ---
 
@@ -8,14 +8,14 @@ One-click install for the full Saropa developer toolkit. **Saropa Suite** bundle
 
 Installing the full Saropa Suite unlocks native, cross-extension APIs that dramatically speed up your workflow:
 
-* **Log Capture + Lints:** Exported bug reports become actually useful. Log Capture natively cross-references runtime errors with static analysis findings. It embeds lint violations (filtered by impact), OWASP executive summaries, and overall project health scores directly into your logs. Stale lint data is automatically refreshed before report generation.
-* **Log Capture + Drift Advisor:** Your debugging sessions now carry deep database context. Session metadata bundles query performance stats, schema summaries, anomaly counts, and index suggestions. Right-click any SQL line in your logs to instantly "Open in Drift Advisor" to profile and optimize the query. Root-cause log hints will actively reference Drift database issues.
-* **Workspace + the suite:** Pin the rest of the toolkit's entry points as one-click favorites — run a Lints analysis, launch a Log Capture repro script, or kick off a Drift Advisor seed/migration — so the tools you installed together are always one action away, from a single sidebar.
-* **Chat Explorer + the suite:** Find the Claude Code session that worked on your project. Search your session history by word, file, command, branch or PR, see which session edited a file, and resume it from the sidebar.
+* **Capture + Lints:** Exported bug reports become actually useful. Saropa Capture natively cross-references runtime errors with static analysis findings. It embeds lint violations (filtered by impact), OWASP executive summaries, and overall project health scores directly into your logs. Stale lint data is automatically refreshed before report generation.
+* **Capture + Drift Advisor:** Your debugging sessions now carry deep database context. Session metadata bundles query performance stats, schema summaries, anomaly counts, and index suggestions. Right-click any SQL line in your logs to instantly "Open in Drift Advisor" to profile and optimize the query. Root-cause log hints will actively reference Drift database issues.
+* **Workspace + the suite:** Pin the rest of the toolkit's entry points as one-click favorites — run a Lints analysis, launch a Saropa Capture repro script, or kick off a Drift Advisor seed/migration — so the tools you installed together are always one action away, from a single sidebar.
+* **Chats + the suite:** Find the Claude Code session that worked on your project. Search your session history by word, file, command, branch or PR, see which session edited a file, and resume it from the sidebar.
 
 ```
 ┌─────────────────────────┐         ┌─────────────────────────┐
-│     Saropa Workspace    │         │   Saropa Chat Explorer  │
+│     Saropa Workspace    │         │       Saropa Chats      │
 │  Pin & run files,       │         │  Search & resume Claude │
 │  scripts, entry points  │         │  Code session history   │
 └────────────┬────────────┘         └────────────┬────────────┘
@@ -39,7 +39,7 @@ Installing the full Saropa Suite unlocks native, cross-extension APIs that drama
                │  violations.                  │
                │                               │
   ┌────────────┴───────────────────────────────┴─────────────┐
-  │                   Saropa Log Capture                     │
+  │                     Saropa Capture                       │
   │         Persistent Runtime Logging & Navigation          │
   └──────────────────────────┬───────────────────────────────┘
                              │
@@ -54,8 +54,8 @@ Installing the full Saropa Suite unlocks native, cross-extension APIs that drama
 
 ## 🛠️ What's Included
 
-### <img src="images/icon_saropa_log_capture.png" width="28" align="top"> [Saropa Log Capture](https://marketplace.visualstudio.com/items?itemName=saropa.saropa-log-capture)
-**Intelligent, Persistent Logging:** The Debug Console is deleted the moment you stop debugging — Log Capture fixes that. It automatically saves all debug session output to persistent, searchable log files and provides a full diagnostic workstation inside VS Code.
+### <img src="images/icon_saropa_log_capture.png" width="28" align="top"> [Saropa Capture](https://marketplace.visualstudio.com/items?itemName=saropa.saropa-capture)
+**Intelligent, Persistent Logging:** The Debug Console is deleted the moment you stop debugging — Saropa Capture fixes that. It automatically saves all debug session output to persistent, searchable log files and provides a full diagnostic workstation inside VS Code.
 
 - **Zero-config capture** — works with any debug adapter (Dart, Flutter, Node, Python, C++, Go, Java). Install, press F5, done.
 - **Virtual-scrolling viewer** — handles 100K+ lines without lag, with real-time severity filtering across 8 levels, regex search with history, and click-to-source navigation.
@@ -71,7 +71,7 @@ Installing the full Saropa Suite unlocks native, cross-extension APIs that drama
 <img src="images/screenshots/20260401_log_viewer_sql.png" alt="Log viewer showing Drift SQL queries" width="450">
 
 ### <img src="images/icon_saropa_lints.png" width="28" align="top"> [Saropa Lints](https://marketplace.visualstudio.com/items?itemName=saropa.saropa-lints)
-**Strict Behavioral Analysis:** 2,100+ custom lint rules and 250+ quick fixes that go far beyond syntax — catching the runtime errors, memory leaks, and security vulnerabilities that standard linters miss entirely.
+**Strict Behavioral Analysis:** 2,300+ custom lint rules and 250+ quick fixes that go far beyond syntax — catching the runtime errors, memory leaks, and security vulnerabilities that standard linters miss entirely.
 
 - **Behavioral detection** — catches code that compiles but fails at runtime: undisposed controllers, `setState` after dispose, `GlobalKey` recreation, hardcoded credentials. Uses proper AST type checking, not string matching.
 - **Library-specific audits** — 50+ rules per popular package (GetX, Riverpod, Bloc, Provider, Firebase, Isar, Hive, Dio, GraphQL, Supabase, Flutter Hooks, and more) targeting anti-patterns unique to each library.
@@ -113,7 +113,7 @@ Installing the full Saropa Suite unlocks native, cross-extension APIs that drama
 - **Organize & access fast** — named groups with drag-to-reorder, per-pin icon and color, a **Recent** group, **Run Pin…** palette quick-pick, and bindable **Run Top Pin 1–5** keybindings.
 - **Auto-pins, suggestions & import** — common project files surfaced automatically, a pin suggestion for files you open often, and one-time import of existing `.favorites.json` shortcuts.
 
-### <img src="images/icon_saropa_chat_explorer.png" width="28" align="top"> [Saropa Chat Explorer](https://marketplace.visualstudio.com/items?itemName=saropa.claude-chat-explorer)
+### <img src="images/icon_saropa_chat_explorer.png" width="28" align="top"> [Saropa Chats](https://marketplace.visualstudio.com/items?itemName=saropa.claude-chat-explorer)
 **Search and Resume Claude Code Sessions:** Full-text search of your Claude Code session history. Find an old session by any word or phrase, see which session edited a file, check a session's git state, and resume it from the sidebar. Indexes `~/.claude/projects` locally in a worker thread, with no runtime dependencies.
 
 - **Full-text search** — includes subagent transcripts, with search tokens (`file:`, `edited:`, `cmd:`, `tag:`, `sha:`, `pr:`, `branch:`, `from:`, `last:`), exact-phrase, any-order, case, whole-word and regex matching, and filters by time, sender and scope.
