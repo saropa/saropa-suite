@@ -2,7 +2,7 @@
     "name": "saropa-suite",
     "displayName": "Saropa Suite",
     "description": "One-click install for the full integrated Saropa developer toolkit: Capture, Drift, Lints, Workspace, and Chats.",
-    "version": "1.0.9",
+    "version": "1.1.0",
     "publisher": "saropa",
     "license": "MIT",
     "icon": "images/icon.png",

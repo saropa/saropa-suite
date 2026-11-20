@@ -9,3 +9,6 @@ __pycache__/
 
 # Node
 node_modules/
+
+# Saropa Log Capture (index & cache)
+.saropa/
