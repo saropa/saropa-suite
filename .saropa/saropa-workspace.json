@@ -1,7 +1,28 @@
 {
-  "version": 2,
-  "pins": [],
+  "version": 3,
+  "pins": [
+    {
+      "id": "mwpbnek0-s13m3yxl",
+      "path": "scripts/publish.py",
+      "scope": "project",
+      "order": 0,
+      "groupId": "default:deploy",
+      "exec": {
+        "command": "python3",
+        "includeFilePath": true
+      },
+      "label": "Publish",
+      "icon": "telescope",
+      "color": "saropaWorkspace.tint.magenta"
+    }
+  ],
   "groups": [],
-  "removedAutoPins": [],
-  "removedRecipes": []
+  "activeSet": "Default",
+  "sets": [],
+  "removedAutoPins": [
+    "auto:saropa-suite:package.json",
+    "auto:saropa-suite:.saropa/saropa-workspace.json"
+  ],
+  "removedRecipes": [],
+  "autoGroups": {}
 }
